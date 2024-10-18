@@ -1,28 +1,9 @@
-import express from 'express';
-import { json } from 'body-parser';
-import userRoutes from './routes/user.route';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import corsOptions from './config/cors'
-import connectToDatabase from './utils/db';
-import bodyParser from 'body-parser';
+import App from "./app";
+import 'dotenv/config';
 
 
-const app = express();
-const port = process.env.PORT || 3000;
+const port=Number(process.env.PORT)
 
+const app=new App()
 
-dotenv.config();
-
-connectToDatabase();
-// Middleware
-app.use(bodyParser.json());
-// CORS middleware
-app.use(cors(corsOptions));
-
-// Routes
-app.use('/api', userRoutes);
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+app.startServer(port)
