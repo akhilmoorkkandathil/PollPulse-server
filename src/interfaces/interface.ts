@@ -27,8 +27,7 @@ export interface Data{
 export interface StatusMessage{
     status: number; 
     message: string ;
-    data?:string;
-    chatId?:mongoose.Types.ObjectId
+    data?:any;
 }
 
 export interface DecodedToken {
@@ -37,4 +36,23 @@ export interface DecodedToken {
 
 export interface AuthenticatedSocket extends Socket {
     decoded?: DecodedToken;
+}
+
+export interface RetreiveChatData{
+    status: number; 
+    message: string ;
+    chatId:mongoose.Types.ObjectId;
+
+}
+
+export interface IMessage extends Document {
+    sender: UserData;
+    message?: string;
+    createdAt: Date;
+}
+
+export interface OldChatFormatted{
+    userName:string;
+    content:string;
+    sentByUser:boolean;
 }

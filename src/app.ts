@@ -8,6 +8,7 @@ import corsOptions from "./config/cors";
 import { error } from "console";
 import { errorResponse } from "./utils/response";
 import { StatusCode } from "./interfaces/enum";
+import { setUpSocketIO } from "./services/socket";
 // import compression from 'compression'
 // import helmet from "helmet";
 // import cookieParser from 'cookie-parser'
@@ -26,7 +27,7 @@ class App{
         this.routes()
         connectToDatabase()
 
-        // setUpSocketIO(this.server)
+        setUpSocketIO(this.server)
     }
 
     private hello(){

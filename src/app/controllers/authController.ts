@@ -1,6 +1,6 @@
 import { Response,Request } from 'express';
 import { StatusCode } from '../../interfaces/enum';
-import { LoginResponse, StatusMessage } from '../../interfaces/interface';
+import { StatusMessage } from '../../interfaces/interface';
 import AuthUseCases from '../use-cases/authUseCases';
 import { errorWrapper } from '../../utils/errorWrapper';
 import { errorResponse, successResponse } from '../../utils/response';
@@ -28,7 +28,7 @@ export default class AuthControllers{
     });
 
     public login = errorWrapper( async( req:Request, res:Response ) => {
-        const { email, password } = req.body
+        const { email, password } = req.body;
         const loginResponse: StatusMessage= await authUseCases.login(email,password) as StatusMessage        
         if(loginResponse.status !== StatusCode.OK){
             return await errorResponse(loginResponse.status,loginResponse,res);

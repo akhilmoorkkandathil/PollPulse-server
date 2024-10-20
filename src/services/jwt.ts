@@ -4,7 +4,6 @@ import { ObjectId } from 'mongodb';
 import { StatusCode } from '../interfaces/enum';
 import { AuthenticatedSocket, DecodedToken } from '../interfaces/interface';
 
-const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || 'Akhil';
 
 export default class JwtControllers {
 

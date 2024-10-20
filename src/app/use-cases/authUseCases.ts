@@ -68,7 +68,7 @@ export default class AuthUseCases implements AuthUseCaseInterface{
             if(existingUser){
                 const isPasswordMatch=await comparePassword(password,existingUser.password)
                 if(isPasswordMatch){
-                    const accessToken = await jwtController.createToken(existingUser._id.toString(),'15m', process.env.JWT_SECRET_KEY||"Akhil",);
+                    const accessToken = await jwtController.createToken(existingUser._id.toString(),'7d', process.env.JWT_SECRET_KEY||"Akhil",);
                     const refreshToken = await jwtController.createToken(existingUser._id.toString(), '7d',process.env.JWT_REFRESH_SECRET_KEY||"akhil123");
                     return {
                         status: StatusCode.OK as number,
