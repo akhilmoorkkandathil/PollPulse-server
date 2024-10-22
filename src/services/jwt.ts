@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 import { StatusCode } from '../interfaces/enum';
 import { AuthenticatedSocket, DecodedToken } from '../interfaces/interface';
+import { errorResponse } from '../utils/response';
 
 
 export default class JwtControllers {
@@ -19,14 +20,16 @@ export default class JwtControllers {
     isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = req.headers.authorization?.split(' ')[1];
+            
             console.log(token,"Token validating...");
             if (!token) {
-                return res.status(401).json({ message: "Token is missing" });
+                errorResponse(401,{status:401,message:"Token is missing"},res);
+                 return
             }
-    
             const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY || "Akhil") as DecodedToken;
             if (!decoded) {
-                return res.status(StatusCode.Unauthorized).json({ message: 'Invalid token' });
+                 errorResponse(StatusCode.Unauthorized,{status:StatusCode.Unauthorized,message:"Token is missing"},res)
+                 return
             }    
             next();
         } catch (e) {
@@ -34,6 +37,7 @@ export default class JwtControllers {
             res.status(StatusCode.Unauthorized).json({ message: "token authentication failed" });
         }
     };
+    
     refreshToken = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const refreshtoken = req.headers.authorization?.split(' ')[1] || ''; // Assuming Bearer token

@@ -5,6 +5,7 @@ import JwtControllers from "../../services/jwt";
 import { getUserData, otpSetData } from "../../services/redis";
 import { comparePassword } from "../../utils/passwordHashing";
 import { sendOtp } from "../../utils/sendEmail";
+import { validateEmail, validatePassword } from "../../utils/validatePassword";
 import UserRepository from "../repository/userRepository";
 
 
@@ -17,6 +18,17 @@ export default class AuthUseCases implements AuthUseCaseInterface{
     
     register = async (data: UserInterface): Promise<StatusMessage > => {
         try {
+
+            const emailValidationResponse = validateEmail(data.email);
+            const passwordValidationResponse = validatePassword(data.password);
+            if(emailValidationResponse.status == StatusCode.NotAcceptable){
+                return emailValidationResponse;
+            }
+            if(passwordValidationResponse.status == StatusCode.NotAcceptable){
+                return passwordValidationResponse;
+            }
+
+
             const existingUser = await userRepo.findUser(data.email);
 
             if (existingUser) return { status: StatusCode.Conflict as number, message: "User already exists" };
