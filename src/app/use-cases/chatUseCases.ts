@@ -4,6 +4,7 @@ import { IMessage, StatusMessage } from "../../interfaces/interface";
 import messageRespository from "../repository/chatRepository";
 
 
+
 const MessageRepo= new messageRespository()
 export default class ChatUseCases implements IChatUseCase {
     

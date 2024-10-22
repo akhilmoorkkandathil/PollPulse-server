@@ -24,7 +24,7 @@ export default class JwtControllers {
                 return res.status(401).json({ message: "Token is missing" });
             }
     
-            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY || "Rashid") as DecodedToken;
+            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY || "Akhil") as DecodedToken;
             if (!decoded) {
                 return res.status(StatusCode.Unauthorized).json({ message: 'Invalid token' });
             }    

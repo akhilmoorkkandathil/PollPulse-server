@@ -4,6 +4,7 @@ import JwtControllers from './jwt';
 import jwt from 'jsonwebtoken';
 import ChatUseCases from '../app/use-cases/chatUseCases';
 import UsersUseCases from '../app/use-cases/userUseCase';
+import { PollUseCase } from '../app/use-cases/pollUseCases';
 
 
 interface DecodedToken {
@@ -16,7 +17,8 @@ export interface AuthenticatedSocket extends Socket {
 
 const jwtController = new JwtControllers();
 const chatUseCase = new ChatUseCases();
-const userUseCase = new UsersUseCases()
+const userUseCase = new UsersUseCases();
+const pollUsecase = new PollUseCase()
 
 
 
@@ -108,6 +110,25 @@ export const setUpSocketIO = (server: HttpServer): void => {
                 console.error('Error parsing group message:', error);
             }
         });
+
+
+        socket.on('submitVote', async (pollData) => {
+            try {
+              console.log('Vote submitted:', pollData);
+          
+              //Update the poll data via use case
+              const response = await pollUsecase.updatePollData(pollData);
+          
+              if (response.status === 200) {
+                // Broadcast the updated poll data to all clients
+                io.emit('updatePoll', pollData); // Sends to everyone including the sender
+              } else {
+                console.error('Error updating poll:', response.message);
+              }
+            } catch (error) {
+              console.error('Error handling vote submission:', error);
+            }
+          });
 
         socket.on('disconnect', () => {
             console.log('User disconnected:', socket.id);
